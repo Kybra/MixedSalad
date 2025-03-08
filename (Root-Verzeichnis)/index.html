@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mixed Salad - Home</title>
+    <title>Mixed Salad - Comic Reader</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Navigation -->
+
 
 <header>
+
+      <!-- Navigation -->
     <nav>
         <ul class="nav-menu">
             <li><a href="#">Home</a></li>
@@ -22,7 +24,7 @@
         </ul>
     </nav>
 </header>
-        
+
            <!-- Einleitung (Intro-Bereich) -->
            
            <section class="intro">
@@ -40,13 +42,19 @@
     <!-- Hier geht der Content weiter -->
 
 
-    <main>
-        <section id="comic-reader">
-            <h1>Read Mixed Salad Online</h1>
-            <p>All chapters available for free!</p>
-            <div class="comic-container">
-                <p>📖 Comic-Reader wird hier eingefügt...</p>
-            </div>
+<main class="comic-reader">
+    <section id="comic-reader">
+        <h1>Read Mixed Salad Online</h1>
+        <p>All chapters available for free!</p>
+        <div class="comic-container">
+            <button id="prevPage" class="nav-btn" disabled>← Previous</button>
+            <img id="comicPage" src="comics/chapter-01/page-01.jpg" alt="Comic Page">
+            <button id="nextPage" class="nav-btn">Next →</button>
+        </div>
+    </section>
+</main>
+                
+            
         </section>
 
         <section id="donate">
