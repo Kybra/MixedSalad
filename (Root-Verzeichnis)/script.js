@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ==================== Comic-Reader ==================== //
+    // Comic-Reader
     const totalPages = 20; // Anzahl der Comic-Seiten (kann angepasst werden)
     const pages = Array.from({ length: totalPages }, (_, i) => `comics/chapter-01/page-${String(i + 1).padStart(2, '0')}.jpg`);
 
@@ -28,18 +28,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    updateComic(); // Setzt die initiale Comic-Seite
+    updateComic();
 
-    // ==================== Mobile Navigation (Hamburger-Menü) ==================== //
-    const hamburger = document.querySelector(".hamburger-menu");
-    const navLinks = document.querySelector(".nav-links");
+    // Menü-Button für Mobile Navigation
+    const menuButton = document.getElementById("menuButton");
+    const navLinks = document.getElementById("navLinks");
 
-    if (hamburger && navLinks) {
-        hamburger.addEventListener("click", function () {
-            navLinks.classList.toggle("active");
-            hamburger.classList.toggle("open");
+    if (menuButton && navLinks) {
+        menuButton.addEventListener("click", function () {
+            navLinks.classList.toggle("show");
         });
     } else {
-        console.warn("Hamburger menu or navigation links not found!");
+        console.warn("Menu button or navigation links not found!");
     }
 });

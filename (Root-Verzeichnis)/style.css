@@ -1,31 +1,28 @@
 /* ========== BASIS-STYLES ========== */
 :root {
-  --color-1: #8bc34b;
-  --color-2: #ffec3d;
-  --color-3: #ff5724;
-  --color-4: #673ab6;
-  --color-5: #4051b5;
-  --white-space: #f5f5f5;
-  --text-black: #222;
+    --color-1: #8bc34b;
+    --color-2: #ffec3d;
+    --color-3: #FF0000;
+    --color-4: #673ab6;
+    --color-5: #4051b5;
+    --white-space: #f5f5f5;
+    --text-black: #222;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: var(--white-space);
-  color: var(--text-black);
-  margin: 0;
-  padding: 0;
-  padding-top: 80px; /* Damit der feste Header den Inhalt nicht überlappt */
-}
-
-/* ========== HEADER ========== */
-header {
-  background: var(--color-5);
-  padding: 20px;
-  text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: var(--white-space);
+    color: var(--text-black);
+    margin: 0;
+    padding-top: 80px;
 }
 
 /* ========== NAVIGATION ========== */
+
+.logo img {
+    height: 45px; /* Größe anpassen */
+    width: auto;
+}
 
 .navbar {
     display: flex;
@@ -42,12 +39,12 @@ header {
 
 .nav-links {
     list-style: none;
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
     display: flex;
-    gap: 20px;
-}
-
-.nav-links li {
-    display: inline;
+    justify-content: space-evenly;
+    gap: 10px;
 }
 
 .nav-links a {
@@ -55,7 +52,6 @@ header {
     color: white;
     font-weight: bold;
     padding: 10px 15px;
-    transition: 0.3s ease-in-out;
 }
 
 .nav-links a:hover {
@@ -63,108 +59,132 @@ header {
     border-radius: 5px;
 }
 
-/* ========== HAMBURGER MENU (Mobile) ========== */
+/* ========== MENU BUTTON ========== */
 
-.hamburger-menu {
+#menuButton {
     display: none;
-    flex-direction: column;
+    background: var(--color-3);
+    color: white;
+    padding: 10px 15px;
+    font-size: 18px;
+    border: none;
     cursor: pointer;
-}
-
-.hamburger-menu span {
-    background: white;
-    height: 4px;
-    width: 30px;
-    margin: 4px 0;
     border-radius: 5px;
-    transition: 0.3s ease-in-out;
 }
 
 /* Mobile Navigation */
 @media (max-width: 768px) {
+    #menuButton {
+        display: block;
+    }
+
     .nav-links {
         display: none;
         flex-direction: column;
         background: var(--color-5);
         width: 100%;
-        position: fixed;
+        position: absolute;
         top: 60px;
         left: 0;
         text-align: center;
         padding: 20px 0;
     }
 
-    .nav-links.active {
-        display: flex;
-    }
-
-    .hamburger-menu {
+    .nav-links.show {
         display: flex;
     }
 }
 
-/* Hamburger-Animation */
-.hamburger-menu.open span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
+/* ========== CONTAINER: Kapitel-Navigation + Comic nebeneinander ========== */
+.container {
+    display: flex;
+    flex-direction: row; /* Kapitel-Navigation links, Comic rechts */
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
 }
 
-.hamburger-menu.open span:nth-child(2) {
-    opacity: 0;
+/* ========== KAPITEL-NAVIGATION ========== */
+.chapter-nav {
+    width: 220px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100vh; /* Damit sie den ganzen Bildschirm füllt */
+    overflow-y: auto; /* Falls es viele Kapitel gibt, wird sie scrollbar */
+    position: sticky;
+    top: 80px; /* Bleibt sichtbar beim Scrollen */
 }
 
-.hamburger-menu.open span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
+.chapter-nav h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.chapter-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.chapter-nav li {
+    margin-bottom: 5px;
+}
+
+.chapter-nav a {
+    text-decoration: none;
+    color: var(--color-5);
+    font-weight: bold;
 }
 
 /* ========== COMIC READER ========== */
-
 .comic-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-grow: 1; /* Nimmt den restlichen Platz ein */
     max-width: 800px;
-    margin: 40px auto;
     padding: 20px;
-    background: #fff;
+    background: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .comic-container img {
     width: 100%;
     max-width: 750px;
-    height: auto;
     border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-/* Buttons */
-.nav-btn {
-    margin: 10px;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    background-color: var(--color-3);
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.nav-btn:hover:not(:disabled) {
-    background-color: var(--color-4);
-}
-
-.nav-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
 }
 
 /* ========== FOOTER ========== */
 footer {
-  background: var(--color-5);
-  color: white;
-  text-align: center;
-  padding: 15px;
-  margin-top: 20px;
+    background: var(--color-5);
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+/* ========== MOBILE: Kapitel-Navigation unter Comic ========== */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Auf kleinen Bildschirmen untereinander */
+    }
+
+    .chapter-nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 10px;
+    }
+
+    .chapter-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .comic-container {
+        width: 100%;
+    }
 }
