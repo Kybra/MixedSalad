@@ -1,8 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Comic-Reader
-    const totalPages = 23; // Anzahl der Comic-Seiten (kann angepasst werden)
-    const pages = Array.from({ length: totalPages }, (_, i) => `comics/chapter-01/page-${String(i + 1).padStart(2, '0')}.jpg`);
+    let currentChapter = "chapter-01"; // Standardmäßig Kapitel 1
+    let totalPages = 23; // Standard: Kapitel 1 hat 23 Seiten
 
+    function getPages(chapter, total) {
+        return Array.from({ length: total }, (_, i) => `comics/${chapter}/page-${String(i + 1).padStart(2, '0')}.jpg`);
+    }
+
+    let pages = getPages(currentChapter, totalPages);
     let currentPage = 0;
     const comicPage = document.getElementById("comicPage");
     const prevButton = document.getElementById("prevPage");
@@ -28,44 +33,50 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Klicke auf das Comic-Bild, um zur nächsten Seite zu gelangen
     comicPage.addEventListener("click", goToNextPage);
-
-    // Behalte weiterhin den Button für die Navigation
     nextButton.addEventListener("click", goToNextPage);
 
     updateComic();
- 
-    // Zurück zu Seite 1, wenn auf "Chapter 1" geklickt wird
-    const chapter1Link = document.querySelector(".chapter-nav a[href='#']");
-    if (chapter1Link) {
-        chapter1Link.addEventListener("click", function (event) {
+
+    // Kapitel-Navigation für Kapitel 1-8
+    document.querySelectorAll(".chapter-nav a").forEach(link => {
+        link.addEventListener("click", function (event) {
             event.preventDefault();
+            const chapter = this.getAttribute("href").replace("#", "");
+
+            if (chapter === "chapter-01") {
+                currentChapter = "chapter-01";
+                totalPages = 23;
+            } else if (chapter === "chapter-02") {
+                currentChapter = "chapter-02";
+                totalPages = 33; // Falls Kapitel 2 z. B. 33 Seiten hat
+            } else if (chapter === "chapter-03") {
+                currentChapter = "chapter-03";
+                totalPages = 30; // Platzhalter für Kapitel 3
+            } else if (chapter === "chapter-04") {
+                currentChapter = "chapter-04";
+                totalPages = 28; // Platzhalter für Kapitel 4
+            } else if (chapter === "chapter-05") {
+                currentChapter = "chapter-05";
+                totalPages = 35; // Platzhalter für Kapitel 5
+            } else if (chapter === "chapter-06") {
+                currentChapter = "chapter-06";
+                totalPages = 27; // Platzhalter für Kapitel 6
+            } else if (chapter === "chapter-07") {
+                currentChapter = "chapter-07";
+                totalPages = 32; // Platzhalter für Kapitel 7
+            } else if (chapter === "chapter-08") {
+                currentChapter = "chapter-08";
+                totalPages = 29; // Platzhalter für Kapitel 8
+            }
+
+            pages = getPages(currentChapter, totalPages);
             currentPage = 0;
             updateComic();
         });
-    }
-    document.addEventListener("DOMContentLoaded", function () {
-    // Zurück zu Seite 1 von Kapitel 2, wenn auf "Chapter 2: Service Call" geklickt wird
-    const chapter2Link = document.querySelector(".chapter-nav a[href='#chapter-2']");
-    if (chapter2Link) {
-        chapter2Link.addEventListener("click", function (event) {
-            event.preventDefault();
-            currentPage = 0; // Setzt die Seite zurück
-            pages.length = 0; // Leert das aktuelle Seiten-Array
+    });
 
-            // Füllt das Array mit den Seiten von Kapitel 2
-            const totalPagesChapter2 = 33; // Anzahl der Seiten in Kapitel 2 anpassen
-            for (let i = 1; i <= totalPagesChapter2; i++) {
-                pages.push(`comics/chapter-02/page-${String(i).padStart(2, '0')}.jpg`);
-            }
-
-            updateComic();
-        });
-    }
-});
- 
-    // Menü-Button für Mobile Navigation
+    // ======= MENÜ-BUTTON FÜR MOBILE NAVIGATION ======= //
     const menuButton = document.getElementById("menuButton");
     const navLinks = document.getElementById("navLinks");
 
@@ -84,10 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.warn("Menu button or navigation links not found!");
     }
-});
 
-// ========== KOMMENTARFUNKTION ========== //
-document.addEventListener("DOMContentLoaded", function () {
+    // ======= KOMMENTARFUNKTION ======= //
     const commentForm = document.getElementById("commentForm");
     const commentList = document.getElementById("commentList");
 
@@ -140,6 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadComments(); // Initial Kommentare laden
 });
 
+// Funktion zum Löschen von Kommentaren
 function deleteComment(index) {
     let comments = JSON.parse(localStorage.getItem("comments")) || [];
     comments.splice(index, 1); // Entferne den Kommentar an der gegebenen Position
