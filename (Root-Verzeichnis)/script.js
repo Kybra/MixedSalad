@@ -29,8 +29,39 @@ document.addEventListener("DOMContentLoaded", function () {
     function goToNextPage() {
         if (currentPage < pages.length - 1) {
             currentPage++;
-            updateComic();
+        } else {
+            // Automatischer Wechsel zum nächsten Kapitel
+            if (currentChapter === "chapter-01") {
+                currentChapter = "chapter-02";
+                totalPages = 33; // Falls Kapitel 2 z. B. 33 Seiten hat
+            } else if (currentChapter === "chapter-02") {
+                currentChapter = "chapter-03";
+                totalPages = 30; // Falls Kapitel 3 existiert
+            } else if (currentChapter === "chapter-03") {
+                currentChapter = "chapter-04";
+                totalPages = 28;
+            } else if (currentChapter === "chapter-04") {
+                currentChapter = "chapter-05";
+                totalPages = 35;
+            } else if (currentChapter === "chapter-05") {
+                currentChapter = "chapter-06";
+                totalPages = 27;
+            } else if (currentChapter === "chapter-06") {
+                currentChapter = "chapter-07";
+                totalPages = 32;
+            } else if (currentChapter === "chapter-07") {
+                currentChapter = "chapter-08";
+                totalPages = 29;
+            } else {
+                return; // Letztes Kapitel erreicht, keine weitere Aktion
+            }
+    
+            // Neues Kapitel laden
+            pages = getPages(currentChapter, totalPages);
+            currentPage = 0; // Erste Seite des neuen Kapitels setzen
         }
+        
+        updateComic();
     }
 
     comicPage.addEventListener("click", goToNextPage);
