@@ -43,8 +43,8 @@ body {
     width: 100%;
     margin: 0 auto;
     display: flex;
-    justify-content: space-evenly;
-    gap: 10px;
+    justify-content: center; /* Statt space-evenly → center für bessere Zentrierung */
+    gap: 40px; /* Etwas mehr Abstand zwischen den Links */
 }
 
 .nav-links a {
@@ -52,11 +52,30 @@ body {
     color: white;
     font-weight: bold;
     padding: 10px 15px;
+    position: relative;
+    transition: color 0.3s ease-in-out;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Leichte Schattierung */
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
 }
 
 .nav-links a:hover {
     background: var(--color-3);
     border-radius: 5px;
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
 }
 
 /* ========== MENU BUTTON ========== */
@@ -77,11 +96,10 @@ body {
         border: none;
         cursor: pointer;
         border-radius: 5px;
-        position: absolute;
-        right: 10px; /* Mehr Abstand vom Rand */
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 2000;
+        position: fixed; /* Statt absolute → fixed für stabilere Platzierung */
+        right: 10px; /* Abstand erhöhen */
+        top: 15px; /* Mehr Platz nach unten */
+        z-index: 3000; /* Stellt sicher, dass es nicht verdeckt wird */
     }
 
     .nav-links {
@@ -116,9 +134,9 @@ body {
 .chapter-nav {
     width: 220px;
     background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 15px; /* Weichere Ecken */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Leichterer Schatten */
     height: 100vh; /* Damit sie den ganzen Bildschirm füllt */
     overflow-y: auto; /* Falls es viele Kapitel gibt, wird sie scrollbar */
     position: sticky;
@@ -192,5 +210,144 @@ footer {
 
     .comic-container {
         width: 100%;
+    }
+}
+
+/* ========== KOMMENTAR-BEREICH ========== */
+.comment-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-left: 5px solid var(--color-5);
+}
+
+.comment-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--color-5);
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment-form input, .comment-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.comment-form button {
+    padding: 12px;
+    background-color: var(--color-3);
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.comment-form button:hover {
+    background-color: var(--color-4);
+}
+
+.comment-list {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 2px solid #ddd;
+    max-height: 100px; /* Set a max height for the comment list */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.comment {
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--color-5);
+}
+
+.comment strong {
+    color: var(--color-5);
+}
+.delete-comment {
+    background: none;
+    border: none;
+    color: var(--color-3);
+    font-size: 15px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease-in-out;
+}
+
+.delete-comment:hover {
+    color: var(--color-4);
+    transform: scale(1.1);
+}
+
+/* ========== CHARACTERS PAGE STYLING ========== */
+.character-container {
+    max-width: 900px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.character-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+.character-info {
+    flex: 1;
+    text-align: left;
+}
+
+.character-info h2 {
+    font-size: 1.6rem;
+    color: var(--color-5);
+    margin-bottom: 8px;
+}
+
+.character-info p {
+    font-size: 1rem;
+    color: var(--text-black);
+}
+
+.character-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 3px solid var(--color-5);
+}
+
+/* ========== MOBILE: Charaktere untereinander ========== */
+@media (max-width: 768px) {
+    .character-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .character-image img {
+        width: 100px;
+        height: 100px;
     }
 }

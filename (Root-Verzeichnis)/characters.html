@@ -1,0 +1,67 @@
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/logo.png" alt="Mixed Salad Logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="characters.html">Characters</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="author.html">Author</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="character-container">
+        <h1>Meet the Characters</h1>
+
+        <section class="character-profile">
+            <div class="character-info">
+                <h2>Stewart</h2>
+                <p>A mysterious and energetic boy with a hidden past.</p>
+            </div>
+            <div class="character-image">
+                <img src="characters/stewart.jpg" alt="Stewart">
+            </div>
+        </section>
+
+        <section class="character-profile">
+            <div class="character-info">
+                <h2>Blake</h2>
+                <p>The hot-headed demon hunter with a strong sense of justice.</p>
+            </div>
+            <div class="character-image">
+                <img src="characters/blake.jpg" alt="Blake">
+            </div>
+        </section>
+
+        <!-- Weitere Charaktere hier hinzufügen -->
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const hamburger = document.querySelector(".hamburger-menu");
+        const navLinks = document.querySelector(".nav-links");
+
+        if (hamburger && navLinks) {
+            hamburger.addEventListener("click", function () {
+                navLinks.classList.toggle("nav-active");
+                hamburger.classList.toggle("toggle");
+            });
+        }
+    });
+</script>
+</body>
