@@ -35,8 +35,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.getElementById("navLinks");
 
     if (menuButton && navLinks) {
-        menuButton.addEventListener("click", function () {
+        menuButton.addEventListener("click", function (event) {
             navLinks.classList.toggle("show");
+            event.stopPropagation(); // Verhindert, dass das Menü sich sofort wieder schließt
+        });
+
+        // Schließe das Menü, wenn außerhalb geklickt wird
+        document.addEventListener("click", function (event) {
+            if (!navLinks.contains(event.target) && !menuButton.contains(event.target)) {
+                navLinks.classList.remove("show");
+            }
         });
     } else {
         console.warn("Menu button or navigation links not found!");

@@ -62,20 +62,26 @@ body {
 /* ========== MENU BUTTON ========== */
 
 #menuButton {
-    display: none;
-    background: var(--color-3);
-    color: white;
-    padding: 10px 15px;
-    font-size: 18px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+    display: none; /* Standardmäßig versteckt */
 }
 
 /* Mobile Navigation */
 @media (max-width: 768px) {
     #menuButton {
-        display: block;
+        display: block; /* Nur in der mobilen Ansicht sichtbar */
+        margin-left: auto;
+        background: var(--color-3);
+        color: white;
+        padding: 10px 15px;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        position: absolute;
+        right: 10px; /* Mehr Abstand vom Rand */
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2000;
     }
 
     .nav-links {
