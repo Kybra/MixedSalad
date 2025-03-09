@@ -9,17 +9,13 @@
   --text-black: #222;
 }
 
-.intro {
-    text-align: center;
-    padding: 40px 20px;
-}
-
 body {
   font-family: Arial, sans-serif;
   background-color: var(--white-space);
   color: var(--text-black);
   margin: 0;
   padding: 0;
+  padding-top: 80px; /* Damit der feste Header den Inhalt nicht überlappt */
 }
 
 /* ========== HEADER ========== */
@@ -29,56 +25,96 @@ header {
   text-align: center;
 }
 
-header h1 {
-  color: white;
-  margin: 0;
-}
+/* ========== NAVIGATION ========== */
 
-nav {
-    background-color: var(--color-5); /* Dunkles Blau */
-    padding: 10px 0;
-    text-align: center;
-}
-
-.nav-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.navbar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-5);
+    padding: 15px 30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
     gap: 20px;
 }
 
-.nav-menu li {
-    display: inline-block;
+.nav-links li {
+    display: inline;
 }
 
-.nav-menu a {
+.nav-links a {
     text-decoration: none;
     color: white;
     font-weight: bold;
     padding: 10px 15px;
-    transition: 0.3s;
+    transition: 0.3s ease-in-out;
 }
 
-.nav-menu a:hover {
-    background-color: var(--color-3); /* Orange Hover */
+.nav-links a:hover {
+    background: var(--color-3);
     border-radius: 5px;
 }
 
-/* Intro-Bereich */
-.intro {
-    text-align: center;
-    padding: 50px 20px;
-    background-color: white;
-    color: black;
+/* ========== HAMBURGER MENU (Mobile) ========== */
+
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
 }
 
+.hamburger-menu span {
+    background: white;
+    height: 4px;
+    width: 30px;
+    margin: 4px 0;
+    border-radius: 5px;
+    transition: 0.3s ease-in-out;
+}
 
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: var(--color-5);
+        width: 100%;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        text-align: center;
+        padding: 20px 0;
+    }
 
-/* ========== COMIC READER ========== */
+    .nav-links.active {
+        display: flex;
+    }
 
+    .hamburger-menu {
+        display: flex;
+    }
+}
 
+/* Hamburger-Animation */
+.hamburger-menu.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
 
 /* ========== COMIC READER ========== */
 
@@ -87,9 +123,9 @@ nav {
     flex-direction: column;
     align-items: center;
     max-width: 800px;
-    margin: 40px auto; /* Mehr Weißraum */
+    margin: 40px auto;
     padding: 20px;
-    background: #fff; /* Dezenter Hintergrund */
+    background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -99,18 +135,7 @@ nav {
     max-width: 750px;
     height: auto;
     border-radius: 10px;
-    margin-bottom: 20px; /* Mehr Weißraum unter dem Bild */
-}
-
-/* Navigationselemente */
-.comic-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Buttons mittig ausrichten */
-    width: 100%;
-    max-width: 750px;
-    margin-top: 10px;
-    gap: 20px; /* Abstand zwischen den Buttons */
+    margin-bottom: 20px;
 }
 
 /* Buttons */
@@ -134,6 +159,7 @@ nav {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
 /* ========== FOOTER ========== */
 footer {
   background: var(--color-5);
