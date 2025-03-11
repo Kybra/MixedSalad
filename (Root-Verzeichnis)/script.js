@@ -113,14 +113,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (menuButton && navLinks) {
         menuButton.addEventListener("click", function (event) {
-            navLinks.classList.toggle("show");
+            navLinks.classList.toggle("nav-active");
             event.stopPropagation(); // Verhindert, dass das Menü sich sofort wieder schließt
         });
 
         // Schließe das Menü, wenn außerhalb geklickt wird
         document.addEventListener("click", function (event) {
             if (!navLinks.contains(event.target) && !menuButton.contains(event.target)) {
-                navLinks.classList.remove("show");
+                navLinks.classList.remove("nav-active");
             }
         });
     } else {
