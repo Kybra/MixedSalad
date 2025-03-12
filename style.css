@@ -121,6 +121,22 @@ body {
         align-items: center;
         gap: 20px;
     }
+
+    .container {
+        flex-direction: column; /* Elemente untereinander anordnen */
+    }
+
+    .comic-title {
+        order: -2; /* Überschrift kommt zuerst */
+    }
+
+    .chapter-nav {
+        order: -1; /* Kapitel-Navigation kommt danach */
+    }
+
+    .comic-container {
+        order: 0; /* Comic-Reader kommt zuletzt */
+    }
 }
 
 /* ========== CONTAINER: Kapitel-Navigation + Comic nebeneinander ========== */
@@ -204,6 +220,7 @@ footer {
         height: auto;
         position: relative;
         padding: 10px;
+        margin-top: 20px; /* Schiebt die Kapitel-Navigation etwas nach unten */
     }
 
     .chapter-nav ul {
@@ -353,5 +370,13 @@ footer {
     .character-image img {
         width: 100px;
         height: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .comic-title {
+        font-size: 1.4rem; /* Kleinere Schrift für bessere Sichtbarkeit */
+        margin-top: 80px; /* Mehr Abstand, damit die Überschrift sichtbar bleibt */
+        text-align: center; /* Zentrierung für bessere mobile Darstellung */
     }
 }
