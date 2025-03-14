@@ -183,6 +183,51 @@ body {
     font-weight: bold;
 }
 
+/* ========== STYLING FÜR DIE KAPITEL-DROPDOWNS ========== */
+.chapter-nav details {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.chapter-nav summary {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 12px 15px;
+    background: var(--color-5);
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out;
+}
+
+.chapter-nav summary:hover {
+    background: var(--color-4);
+}
+
+.chapter-nav ul {
+    padding: 10px 15px;
+    list-style: none;
+    margin: 0;
+}
+
+.chapter-nav li {
+    margin-bottom: 8px;
+}
+
+.chapter-nav a {
+    text-decoration: none;
+    color: var(--color-5);
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.chapter-nav a:hover {
+    color: var(--color-4);
+}
+
 /* ========== COMIC READER ========== */
 .comic-container {
     flex-grow: 1; /* Nimmt den restlichen Platz ein */

@@ -15,7 +15,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const nextButton = document.getElementById("nextPage");
 
     function updateComic() {
+        if (!comicPage) return;
+        
+        comicPage.src = ""; // Bild erst leeren, um ein Neuladen zu vermeiden
+        comicPage.loading = "lazy"; // Lazy Loading aktivieren
         comicPage.src = pages[currentPage];
+
         prevButton.disabled = currentPage === 0;
         nextButton.disabled = currentPage === pages.length - 1;
     }
@@ -70,7 +75,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
     comicPage.addEventListener("click", goToNextPage);
     nextButton.addEventListener("click", goToNextPage);
-
+    
+    // Touch-Steuerung für Mobile: Swipe-Gesten
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    function handleTouchStart(event) {
+        touchStartX = event.touches[0].clientX;
+    }
+    
+    function handleTouchEnd(event) {
+        touchEndX = event.changedTouches[0].clientX;
+        let swipeDistance = touchStartX - touchEndX;
+    
+        if (swipeDistance > 50) {
+            // Swipe nach links -> Nächste Seite
+            goToNextPage();
+        } else if (swipeDistance < -50) {
+            // Swipe nach rechts -> Vorherige Seite
+            if (currentPage > 0) {
+                currentPage--;
+                updateComic();
+            }
+        }
+    }
+    
+    if (comicPage) {
+        comicPage.addEventListener("touchstart", handleTouchStart);
+        comicPage.addEventListener("touchend", handleTouchEnd);
+    }
+    
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") {
+            if (currentPage > 0) {
+                currentPage--;
+                updateComic();
+            }
+        } else if (event.key === "ArrowRight") {
+            goToNextPage();
+        }
+    });
+    
     updateComic();
 
     if (chapterSelect) {
@@ -227,6 +272,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     loadComments(); // Initial Kommentare laden
+
+    // Lazy Loading für alle Comic-Seiten aktivieren
+    function lazyLoadImages() {
+        const images = document.querySelectorAll(".comic-container img");
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src; // Lade das Bild nur, wenn es sichtbar ist
+                    observer.unobserve(img); // Beobachtung beenden, sobald das Bild geladen wurde
+                }
+            });
+        });
+
+        images.forEach(img => {
+            img.dataset.src = img.src;
+            img.src = ""; // Verhindert initiales Laden
+            observer.observe(img);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", lazyLoadImages);
 });
 
 // Funktion zum Löschen von Kommentaren
