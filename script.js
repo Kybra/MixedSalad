@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Neues Kapitel laden
             pages = getPages(currentChapter, totalPages);
             currentPage = 0; // Erste Seite des neuen Kapitels setzen
+            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
         }
         
         updateComic();
@@ -154,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Seiten neu laden
             pages = getPages(currentChapter, totalPages);
             currentPage = 0;
+            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
             updateComic();
         });
 
@@ -197,6 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             pages = getPages(currentChapter, totalPages);
             currentPage = 0;
+            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
             updateComic();
         });
     });
@@ -225,49 +228,45 @@ document.addEventListener("DOMContentLoaded", function () {
     const commentForm = document.getElementById("commentForm");
     const commentList = document.getElementById("commentList");
 
-    // Kommentare aus LocalStorage laden
-    function loadComments() {
-        const comments = JSON.parse(localStorage.getItem("comments")) || [];
-        commentList.innerHTML = "";
-        const urlParams = new URLSearchParams(window.location.search);
-        const isAdmin = urlParams.has("admin");
+    // Kommentarformular-Handling
+    commentForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-        comments.forEach((comment, index) => {
+        const name = document.getElementById("commentName").value.trim();
+        const text = document.getElementById("commentText").value.trim();
+
+        if (name === "" || text === "") return;
+
+        const comment = {
+            name: name,
+            text: text,
+            chapter: currentChapter, // Speichert das Kapitel
+            timestamp: new Date().toISOString()
+        };
+
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        comments.push(comment);
+        localStorage.setItem("comments", JSON.stringify(comments));
+
+        document.getElementById("commentForm").reset();
+        loadComments(); // Kommentare neu laden
+    });
+
+    // Kommentare laden für das aktuelle Kapitel
+    function loadComments() {
+        const commentList = document.getElementById("commentList");
+        if (!commentList) return;
+
+        commentList.innerHTML = "";
+
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        let filteredComments = comments.filter(comment => comment.chapter === currentChapter);
+
+        filteredComments.forEach(comment => {
             const commentElement = document.createElement("div");
             commentElement.classList.add("comment");
-            commentElement.innerHTML = `<strong>${comment.name}:</strong> ${comment.text}`;
-
-            // Nur Admin sieht den Lösch-Button
-            if (isAdmin) {
-                const deleteButton = document.createElement("button");
-                deleteButton.classList.add("delete-comment");
-                deleteButton.dataset.index = index;
-                deleteButton.innerHTML = "🗑️";
-                deleteButton.addEventListener("click", function () {
-                    deleteComment(index);
-                });
-                commentElement.appendChild(deleteButton);
-            }
-
+            commentElement.innerHTML = `<strong>${comment.name}</strong>: ${comment.text}`;
             commentList.appendChild(commentElement);
-        });
-    }
-
-    // Kommentar absenden
-    if (commentForm) {
-        commentForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const name = document.getElementById("commentName").value.trim();
-            const text = document.getElementById("commentText").value.trim();
-            if (name && text) {
-                const newComment = { name, text };
-                const comments = JSON.parse(localStorage.getItem("comments")) || [];
-                comments.push(newComment);
-                localStorage.setItem("comments", JSON.stringify(comments));
-                document.getElementById("commentName").value = "";
-                document.getElementById("commentText").value = "";
-                loadComments();
-            }
         });
     }
 
