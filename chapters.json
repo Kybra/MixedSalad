@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const chapterSelect = document.getElementById("chapterSelect");
     // Comic-Reader
     let currentChapter = "chapter-01"; // Standardmäßig Kapitel 1
     let totalPages = 23; // Standard: Kapitel 1 hat 23 Seiten
@@ -53,9 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (currentChapter === "chapter-07") {
                 currentChapter = "chapter-08";
                 totalPages = 29;
-            } else if (currentChapter === "chapter-08") {
-                currentChapter = "chapter-09"; // Buch 2, Kapitel 1
-                totalPages = 30; // Beispiel für Kapitel 9
             } else {
                 return; // Letztes Kapitel erreicht, keine weitere Aktion
             }
@@ -73,49 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateComic();
 
-    if (chapterSelect) {
-        chapterSelect.addEventListener("change", function () {
-            const selectedChapter = chapterSelect.value;
-            
-            if (selectedChapter === "chapter-01") {
-                currentChapter = "chapter-01";
-                totalPages = 23;
-            } else if (selectedChapter === "chapter-02") {
-                currentChapter = "chapter-02";
-                totalPages = 33;
-            } else if (selectedChapter === "chapter-03") {
-                currentChapter = "chapter-03";
-                totalPages = 30;
-            } else if (selectedChapter === "chapter-04") {
-                currentChapter = "chapter-04";
-                totalPages = 28;
-            } else if (selectedChapter === "chapter-05") {
-                currentChapter = "chapter-05";
-                totalPages = 35;
-            } else if (selectedChapter === "chapter-06") {
-                currentChapter = "chapter-06";
-                totalPages = 27;
-            } else if (selectedChapter === "chapter-07") {
-                currentChapter = "chapter-07";
-                totalPages = 32;
-            } else if (selectedChapter === "chapter-08") {
-                currentChapter = "chapter-08";
-                totalPages = 29;
-            } else if (selectedChapter === "chapter-09") {
-                currentChapter = "chapter-09"; // Buch 2, Kapitel 1
-                totalPages = 30; // Beispiel für Kapitel 9
-            }
-
-            // Seiten neu laden
-            pages = getPages(currentChapter, totalPages);
-            currentPage = 0;
-            updateComic();
-        });
-
-        chapterSelect.value = currentChapter;
-    }
-
-    // Kapitel-Navigation für Kapitel 1-9
+    // Kapitel-Navigation für Kapitel 1-8
     document.querySelectorAll(".chapter-nav a").forEach(link => {
         link.addEventListener("click", function (event) {
             event.preventDefault();
@@ -145,9 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (chapter === "chapter-08") {
                 currentChapter = "chapter-08";
                 totalPages = 29; // Platzhalter für Kapitel 8
-            } else if (chapter === "chapter-09") {
-                currentChapter = "chapter-09"; // Buch 2, Kapitel 1
-                totalPages = 30; // Beispiel für Kapitel 9
             }
 
             pages = getPages(currentChapter, totalPages);

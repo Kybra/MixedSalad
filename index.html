@@ -34,18 +34,25 @@
     <!-- Kapitel-Navigation -->
     <aside class="chapter-nav">
         <h2>Chapters</h2>
-        <ul>
-            <li><strong>Book 1: Origin</strong></li>
-            <li><a href="#chapter-01">Chapter 1: Recess</a></li>
-            <li><a href="#chapter-02">Chapter 2: Service Call</a></li>
-            <li><a href="#chapter-03">Chapter 3: Fist in Face</a></li>
-            <li><a href="#chapter-04">Chapter 4: Identity Crisis</a></li>
-            <li><a href="#chapter-05">Chapter 5: Coming soon </a></li>
-            <li><a href="#chapter-06">Chapter 6: Coming soon</a></li>
-            <li><a href="#chapter-07">Chapter 7: Coming soon</a></li>
-            <li><a href="#chapter-08">Chapter 8: Coming soon</a></li>
-            <li class="more-chapters">...</li>
-        </ul>
+        <details>
+            <summary><strong>Book 1</strong></summary>
+            <ul>
+                <li><a href="#chapter-01">Chapter 01</a></li>
+                <li><a href="#chapter-02">Chapter 02</a></li>
+                <li><a href="#chapter-03">Chapter 03</a></li>
+                <li><a href="#chapter-04">Chapter 04</a></li>
+                <li><a href="#chapter-05">Chapter 05</a></li>
+                <li><a href="#chapter-06">Chapter 06</a></li>
+                <li><a href="#chapter-07">Chapter 07</a></li>
+                <li><a href="#chapter-08">Chapter 08</a></li>
+            </ul>
+        </details>
+        <details>
+            <summary><strong>Book 2</strong></summary>
+            <ul>
+                <li><a href="#chapter-09">Chapter 09</a></li>
+            </ul>
+        </details>
     </aside>
 
     <main>
@@ -53,6 +60,19 @@
         <section id="comic-reader">
             <h1>Read Mixed Salad Online</h1>
             <p>All chapters available for free!</p>
+            <!-- Kapitel Dropdown -->
+            <label for="chapterSelect">Select Chapter:</label>
+            <select id="chapterSelect">
+                <option value="chapter-01">Chapter 01</option>
+                <option value="chapter-02">Chapter 02</option>
+                <option value="chapter-03">Chapter 03</option>
+                <option value="chapter-04">Chapter 04</option>
+                <option value="chapter-05">Chapter 05</option>
+                <option value="chapter-06">Chapter 06</option>
+                <option value="chapter-07">Chapter 07</option>
+                <option value="chapter-08">Chapter 08</option>
+                <option value="chapter-09">Chapter 09</option>
+            </select>
             <div class="comic-container">
                 <button id="prevPage" class="nav-btn" disabled>← Previous</button>
                 <img id="comicPage" src="comics/chapter-01/page-01.jpg" alt="Comic Page">
