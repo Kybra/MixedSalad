@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Neues Kapitel laden
             pages = getPages(currentChapter, totalPages);
             currentPage = 0; // Erste Seite des neuen Kapitels setzen
+            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
         }
         
         updateComic();
@@ -75,6 +76,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     comicPage.addEventListener("click", goToNextPage);
     nextButton.addEventListener("click", goToNextPage);
+    
+    // Touch-Steuerung für Mobile: Swipe-Gesten
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    function handleTouchStart(event) {
+        touchStartX = event.touches[0].clientX;
+    }
+    
+    function handleTouchEnd(event) {
+        touchEndX = event.changedTouches[0].clientX;
+        let swipeDistance = touchStartX - touchEndX;
+    
+        if (swipeDistance > 50) {
+            // Swipe nach links -> Nächste Seite
+            goToNextPage();
+        } else if (swipeDistance < -50) {
+            // Swipe nach rechts -> Vorherige Seite
+            if (currentPage > 0) {
+                currentPage--;
+                updateComic();
+            }
+        }
+    }
+    
+    if (comicPage) {
+        comicPage.addEventListener("touchstart", handleTouchStart);
+        comicPage.addEventListener("touchend", handleTouchEnd);
+    }
     
     document.addEventListener("keydown", function (event) {
         if (event.key === "ArrowLeft") {
@@ -125,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Seiten neu laden
             pages = getPages(currentChapter, totalPages);
             currentPage = 0;
+            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
             updateComic();
         });
 
@@ -168,74 +199,74 @@ document.addEventListener("DOMContentLoaded", function () {
 
             pages = getPages(currentChapter, totalPages);
             currentPage = 0;
+            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
             updateComic();
         });
     });
 
-    // ========== FIREBASE INITIALISIEREN ========== //
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+    // ======= MENÜ-BUTTON FÜR MOBILE NAVIGATION ======= //
+    const menuButton = document.getElementById("menuButton");
+    const navLinks = document.getElementById("navLinks");
 
-    // Firebase-Konfiguration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCDzLXC2BJ_flsuldJvkSwUTHTrmCOvo7w",
-      authDomain: "mixedsaladcomments.firebaseapp.com",
-      projectId: "mixedsaladcomments",
-      storageBucket: "mixedsaladcomments.firebasestorage.app",
-      messagingSenderId: "299213994977",
-      appId: "1:299213994977:web:85408e5e0f534828be70a0"
-    };
+    if (menuButton && navLinks) {
+        menuButton.addEventListener("click", function (event) {
+            navLinks.classList.toggle("nav-active");
+            event.stopPropagation(); // Verhindert, dass das Menü sich sofort wieder schließt
+        });
 
-    // Firebase initialisieren
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        // Schließe das Menü, wenn außerhalb geklickt wird
+        document.addEventListener("click", function (event) {
+            if (!navLinks.contains(event.target) && !menuButton.contains(event.target)) {
+                navLinks.classList.remove("nav-active");
+            }
+        });
+    } else {
+        console.warn("Menu button or navigation links not found!");
+    }
 
-    // ========== KOMMENTARFUNKTION MIT FIRESTORE ========== //
+    // ======= KOMMENTARFUNKTION ======= //
     const commentForm = document.getElementById("commentForm");
     const commentList = document.getElementById("commentList");
 
-    async function loadComments() {
+    // Kommentarformular-Handling
+    commentForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById("commentName").value.trim();
+        const text = document.getElementById("commentText").value.trim();
+
+        if (name === "" || text === "") return;
+
+        const comment = {
+            name: name,
+            text: text,
+            chapter: currentChapter, // Speichert das Kapitel
+            timestamp: new Date().toISOString()
+        };
+
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        comments.push(comment);
+        localStorage.setItem("comments", JSON.stringify(comments));
+
+        document.getElementById("commentForm").reset();
+        loadComments(); // Kommentare neu laden
+    });
+
+    // Kommentare laden für das aktuelle Kapitel
+    function loadComments() {
+        const commentList = document.getElementById("commentList");
         if (!commentList) return;
+
         commentList.innerHTML = "";
 
-        try {
-            const q = query(collection(db, "comments"), orderBy("timestamp"));
-            const querySnapshot = await getDocs(q);
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        let filteredComments = comments.filter(comment => comment.chapter === currentChapter);
 
-            querySnapshot.forEach((doc) => {
-                const comment = doc.data();
-                if (comment.chapter === currentChapter) {
-                    const commentElement = document.createElement("div");
-                    commentElement.classList.add("comment");
-                    commentElement.innerHTML = `<strong>${comment.name}</strong>: ${comment.text}`;
-                    commentList.appendChild(commentElement);
-                }
-            });
-        } catch (error) {
-            console.error("Fehler beim Laden der Kommentare: ", error);
-        }
-    }
-
-    if (commentForm) {
-        commentForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
-            const name = document.getElementById("commentName").value.trim();
-            const text = document.getElementById("commentText").value.trim();
-            if (name === "" || text === "") return;
-
-            try {
-                await addDoc(collection(db, "comments"), {
-                    name: name,
-                    text: text,
-                    chapter: currentChapter,
-                    timestamp: new Date()
-                });
-
-                document.getElementById("commentForm").reset();
-                loadComments();
-            } catch (error) {
-                console.error("Fehler beim Speichern des Kommentars: ", error);
-            }
+        filteredComments.forEach(comment => {
+            const commentElement = document.createElement("div");
+            commentElement.classList.add("comment");
+            commentElement.innerHTML = `<strong>${comment.name}</strong>: ${comment.text}`;
+            commentList.appendChild(commentElement);
         });
     }
 

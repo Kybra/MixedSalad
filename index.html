@@ -8,6 +8,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCDzLXC2BJ_flsuldJvkSwUTHTrmCOvo7w",
+          authDomain: "mixedsaladcomments.firebaseapp.com",
+          projectId: "mixedsaladcomments",
+          storageBucket: "mixedsaladcomments.firebasestorage.app",
+          messagingSenderId: "299213994977",
+          appId: "1:299213994977:web:85408e5e0f534828be70a0"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+      </script>
 
 <header>
     <nav class="navbar">
@@ -103,6 +122,6 @@
     <p>&copy; 2025 Mixed Salad - All Rights Reserved.</p>
 </footer>
 
-<script type="module" src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
