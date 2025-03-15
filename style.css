@@ -349,18 +349,7 @@ footer {
     color: var(--color-5);
 }
 .delete-comment {
-    background: none;
-    border: none;
-    color: var(--color-3);
-    font-size: 15px;
-    cursor: pointer;
-    padding: 5px;
-    transition: color 0.3s ease-in-out;
-}
-
-.delete-comment:hover {
-    color: var(--color-4);
-    transform: scale(1.1);
+    display: none !important;
 }
 
 /* ========== CHARACTERS PAGE STYLING ========== */

@@ -264,7 +264,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);document.addEventLis
             commentElement.innerHTML = `
                 <strong>${comment.name}</strong>: ${comment.text}
                 <small>${new Date(comment.timestamp).toLocaleString()}</small>
-                <button onclick="deleteComment('${comment.id}')">🗑</button>
+            <button class="delete-comment" onclick="deleteComment('${comment.id}')">🗑</button>
             `;
             commentList.appendChild(commentElement);
         });
