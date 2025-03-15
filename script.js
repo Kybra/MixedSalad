@@ -1,10 +1,3 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js';
-
-// Supabase Client initialisieren
-const supabaseUrl = 'https://xpgvpcrwjdccfxhrrtrw.supabase.co';  
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwZ3ZwY3J3amRjY2Z4aHJydHJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwMjU4NDAsImV4cCI6MjA1NzYwMTg0MH0.sF5VuiihuukiH7YlbXKTRzScEKTLgrI4MOXQ4O6RWYg';  
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 document.addEventListener("DOMContentLoaded", function () {
     const chapterSelect = document.getElementById("chapterSelect");
     // Comic-Reader
@@ -260,24 +253,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Kommentare laden für das aktuelle Kapitel
-    async function loadComments() {
-        const { data: comments, error } = await supabase
-            .from('comments') // Name der Tabelle in Supabase
-            .select('*')
-            .eq('chapter', currentChapter) // Lade nur Kommentare für das aktuelle Kapitel
-            .order('timestamp', { ascending: true });
-    
-        if (error) {
-            console.error('Fehler beim Laden der Kommentare:', error);
-            return;
-        }
-    
+    function loadComments() {
         const commentList = document.getElementById("commentList");
         if (!commentList) return;
-    
+
         commentList.innerHTML = "";
-    
-        comments.forEach(comment => {
+
+        let comments = JSON.parse(localStorage.getItem("comments")) || [];
+        let filteredComments = comments.filter(comment => comment.chapter === currentChapter);
+
+        filteredComments.forEach(comment => {
             const commentElement = document.createElement("div");
             commentElement.classList.add("comment");
             commentElement.innerHTML = `<strong>${comment.name}</strong>: ${comment.text}`;
@@ -308,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.addEventListener("DOMContentLoaded", lazyLoadImages);
-}); // Diese Zeile schließt die `DOMContentLoaded`-Funktion richtig ab
+});
 
 // Funktion zum Löschen von Kommentaren
 function deleteComment(index) {
