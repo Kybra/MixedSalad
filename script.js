@@ -1,4 +1,10 @@
-document.addEventListener("DOMContentLoaded", function () {
+const { createClient } = window.supabase;
+
+const supabaseUrl = "https://xpgvpcrwjdccfxhrrtrw.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwZ3ZwY3J3amRjY2Z4aHJydHJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwMjU4NDAsImV4cCI6MjA1NzYwMTg0MH0.sF5VuiihuukiH7YlbXKTRzScEKTLgrI4MOXQ4O6RWYg";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);document.addEventListener("DOMContentLoaded", function () {
+   
+
     const chapterSelect = document.getElementById("chapterSelect");
     // Comic-Reader
     let currentChapter = "chapter-01"; // Standardmäßig Kapitel 1
@@ -68,7 +74,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Neues Kapitel laden
             pages = getPages(currentChapter, totalPages);
             currentPage = 0; // Erste Seite des neuen Kapitels setzen
-            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
+            updateComic();
+            loadComments(currentChapter); // Jetzt lädt es direkt die passenden Kommentare
         }
         
         updateComic();
@@ -123,40 +130,14 @@ document.addEventListener("DOMContentLoaded", function () {
         chapterSelect.addEventListener("change", function () {
             const selectedChapter = chapterSelect.value;
             
-            if (selectedChapter === "chapter-01") {
-                currentChapter = "chapter-01";
-                totalPages = 23;
-            } else if (selectedChapter === "chapter-02") {
-                currentChapter = "chapter-02";
-                totalPages = 33;
-            } else if (selectedChapter === "chapter-03") {
-                currentChapter = "chapter-03";
-                totalPages = 30;
-            } else if (selectedChapter === "chapter-04") {
-                currentChapter = "chapter-04";
-                totalPages = 28;
-            } else if (selectedChapter === "chapter-05") {
-                currentChapter = "chapter-05";
-                totalPages = 35;
-            } else if (selectedChapter === "chapter-06") {
-                currentChapter = "chapter-06";
-                totalPages = 27;
-            } else if (selectedChapter === "chapter-07") {
-                currentChapter = "chapter-07";
-                totalPages = 32;
-            } else if (selectedChapter === "chapter-08") {
-                currentChapter = "chapter-08";
-                totalPages = 29;
-            } else if (selectedChapter === "chapter-09") {
-                currentChapter = "chapter-09"; // Buch 2, Kapitel 1
-                totalPages = 30; // Beispiel für Kapitel 9
+            if (selectedChapter !== currentChapter) {
+                currentChapter = selectedChapter;
+                totalPages = getTotalPagesForChapter(currentChapter);
+                pages = getPages(currentChapter, totalPages);
+                currentPage = 0;
+                updateComic();
+                loadComments(currentChapter); // Jetzt lädt es direkt die passenden Kommentare
             }
-
-            // Seiten neu laden
-            pages = getPages(currentChapter, totalPages);
-            currentPage = 0;
-            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
-            updateComic();
         });
 
         chapterSelect.value = currentChapter;
@@ -199,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             pages = getPages(currentChapter, totalPages);
             currentPage = 0;
-            loadComments(); // Kapitelwechsel ruft die richtigen Kommentare auf
+            loadComments(currentChapter); // Kapitelwechsel ruft die richtigen Kommentare auf
             updateComic();
         });
     });
@@ -225,11 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ======= KOMMENTARFUNKTION ======= //
+
     const commentForm = document.getElementById("commentForm");
     const commentList = document.getElementById("commentList");
 
     // Kommentarformular-Handling
-    commentForm.addEventListener("submit", function (event) {
+    commentForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const name = document.getElementById("commentName").value.trim();
@@ -240,37 +222,70 @@ document.addEventListener("DOMContentLoaded", function () {
         const comment = {
             name: name,
             text: text,
-            chapter: currentChapter, // Speichert das Kapitel
+            comic_id: currentChapter, // Speichert das Kapitel
             timestamp: new Date().toISOString()
         };
 
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        comments.push(comment);
-        localStorage.setItem("comments", JSON.stringify(comments));
+        // Save comment to Supabase
+        const { data, error } = await supabase
+        .from('MixedSaladComicComments') // Replace with your table name
+            .insert([comment]);
 
-        document.getElementById("commentForm").reset();
-        loadComments(); // Kommentare neu laden
+        if (error) {
+            console.error('Error saving comment:', error);
+        } else {
+            console.log('Comment saved successfully:', data);
+            document.getElementById("commentForm").reset();
+            loadComments(currentChapter); // Reload comments after saving
+        }
     });
 
     // Kommentare laden für das aktuelle Kapitel
-    function loadComments() {
+    async function loadComments(comicId) {
         const commentList = document.getElementById("commentList");
         if (!commentList) return;
-
+        
         commentList.innerHTML = "";
 
-        let comments = JSON.parse(localStorage.getItem("comments")) || [];
-        let filteredComments = comments.filter(comment => comment.chapter === currentChapter);
+        const { data, error } = await supabase
+        .from("MixedSaladComicComments") // Replace with your table name
+            .select("*")
+            .eq("comic_id", comicId) // Filter by current chapter
+            .order("timestamp", { ascending: false }); // Sort by newest first
 
-        filteredComments.forEach(comment => {
+        if (error) {
+            console.error("Fehler beim Abrufen der Kommentare:", error);
+            return;
+        }
+
+        data.forEach(comment => {
             const commentElement = document.createElement("div");
             commentElement.classList.add("comment");
-            commentElement.innerHTML = `<strong>${comment.name}</strong>: ${comment.text}`;
+            commentElement.innerHTML = `
+                <strong>${comment.name}</strong>: ${comment.text}
+                <small>${new Date(comment.timestamp).toLocaleString()}</small>
+                <button onclick="deleteComment('${comment.id}')">🗑</button>
+            `;
             commentList.appendChild(commentElement);
         });
     }
 
-    loadComments(); // Initial Kommentare laden
+    loadComments(currentChapter); // Initial Kommentare laden
+
+    // Real-Time Updates (Optional)
+    const commentsSubscription = supabase
+        .channel('MixedSaladComicComments')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'MixedSaladComicComments' }, payload => {
+            if (payload.new.comic_id === currentChapter) {
+                loadComments(currentChapter);
+            }
+        })
+        .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'MixedSaladComicComments' }, payload => {
+            if (payload.old.comic_id === currentChapter) {
+                loadComments(currentChapter);
+            }
+        })
+        .subscribe();
 
     // Lazy Loading für alle Comic-Seiten aktivieren
     function lazyLoadImages() {
@@ -296,9 +311,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Funktion zum Löschen von Kommentaren
-function deleteComment(index) {
-    let comments = JSON.parse(localStorage.getItem("comments")) || [];
-    comments.splice(index, 1); // Entferne den Kommentar an der gegebenen Position
-    localStorage.setItem("comments", JSON.stringify(comments));
-    loadComments(); // Kommentare neu laden
+async function deleteComment(commentId) {
+    const { error } = await supabase
+        .from('MixedSaladComicComments')
+        .delete()
+        .eq('id', commentId);
+
+    if (error) {
+        console.error("Fehler beim Löschen:", error);
+    } else {
+        loadComments(currentChapter);
+    }
 }
