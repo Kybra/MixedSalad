@@ -2,7 +2,8 @@ const { createClient } = window.supabase;
 
 const supabaseUrl = "https://xpgvpcrwjdccfxhrrtrw.supabase.co";
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhwZ3ZwY3J3amRjY2Z4aHJydHJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIwMjU4NDAsImV4cCI6MjA1NzYwMTg0MH0.sF5VuiihuukiH7YlbXKTRzScEKTLgrI4MOXQ4O6RWYg";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);document.addEventListener("DOMContentLoaded", function () {
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+document.addEventListener("DOMContentLoaded", function () {
    
 
     const chapterSelect = document.getElementById("chapterSelect");
@@ -27,7 +28,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);document.addEventLis
         comicPage.loading = "lazy"; // Lazy Loading aktivieren
         comicPage.src = pages[currentPage];
 
-        prevButton.disabled = currentPage === 0;
+        prevButton.disabled = (currentChapter === "chapter-01" && currentPage === 0);
         nextButton.disabled = currentPage === pages.length - 1;
     }
 
@@ -35,6 +36,40 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);document.addEventLis
         if (currentPage > 0) {
             currentPage--;
             updateComic();
+        } else {
+            // Wenn wir auf Seite 0 sind, Kapitelwechsel zurück
+            if (currentChapter === "chapter-02") {
+                currentChapter = "chapter-01";
+                totalPages = 23;
+            } else if (currentChapter === "chapter-03") {
+                currentChapter = "chapter-02";
+                totalPages = 33;
+            } else if (currentChapter === "chapter-04") {
+                currentChapter = "chapter-03";
+                totalPages = 30;
+            } else if (currentChapter === "chapter-05") {
+                currentChapter = "chapter-04";
+                totalPages = 28;
+            } else if (currentChapter === "chapter-06") {
+                currentChapter = "chapter-05";
+                totalPages = 35;
+            } else if (currentChapter === "chapter-07") {
+                currentChapter = "chapter-06";
+                totalPages = 27;
+            } else if (currentChapter === "chapter-08") {
+                currentChapter = "chapter-07";
+                totalPages = 32;
+            } else if (currentChapter === "chapter-09") {
+                currentChapter = "chapter-08";
+                totalPages = 29;
+            } else {
+                return; // Wenn Kapitel 01 Seite 0 – nichts tun
+            }
+
+            pages = getPages(currentChapter, totalPages);
+            currentPage = totalPages - 1; // Zur letzten Seite des vorherigen Kapitels
+            updateComic();
+            loadComments(currentChapter);
         }
     });
 
@@ -308,6 +343,18 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);document.addEventLis
     }
 
     document.addEventListener("DOMContentLoaded", lazyLoadImages);
+    
+    // Seitenzahlen (Pagination) – aktualisiert die Comicseite bei Klick
+    document.querySelectorAll(".page-link").forEach(link => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            const page = parseInt(this.dataset.page, 10) - 1;
+            if (!isNaN(page) && page >= 0 && page < pages.length) {
+                currentPage = page;
+                updateComic();
+            }
+        });
+    });
 });
 
 // Funktion zum Löschen von Kommentaren
