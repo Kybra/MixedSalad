@@ -7,37 +7,30 @@
     <title>Mixed Salad - Comic Reader</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .shop-section {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+  body {
+      background-color: var(--author-light);
+      color: var(--author-dark);
+  }
 
-        .shop-section h1 {
-            font-size: 2rem;
-            color: var(--color-5);
-            margin-bottom: 10px;
-        }
+  .shop-section {
+      background-color: white;
+      border: 2px solid var(--author-pink);
+  }
 
-        .shop-section p {
-            font-size: 1.2rem;
-            color: var(--text-black);
-            margin-bottom: 20px;
-        }
+  a {
+      color: var(--author-dark);
+  }
 
-        .placeholder-image {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-      <link rel="icon" type="image/png" href="images/MxS_Favicon.png">
+  .placeholder-image {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-top: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  </style>
+    <link rel="icon" type="image/png" href="images/MxS_Favicon.png">
 </head>
 <body>
 
@@ -56,27 +49,35 @@
                 <li><a href="history.html">History</a></li>
                 <li><a href="shop.html">Shop</a></li>
                 <li><a href="author.html">Author</a></li>
-                <li><a href="contact.html">Contact</a></li>
             </ul>
         </div>
     </nav>
 </header>
 
 <main>
-    <section class="shop-section">
-        <h1>Kübrâ Kamille</h1>
-        <p>https://kuebrakamille.myportfolio.com</p>
-        <p><strong> This is the woman wasting her life with this  </strong></p>
-        <img src="images/kue.jpg" alt="Placeholder - Soon" class="placeholder-image">
-    </section>
-</main>
+      <section class="shop-section">
+          <h1>Kübrâ Kamille</h1>
+          <p>Welcome to my little corner of the internet! I'm a designer who loves cozy vibes, storytelling, and bringing characters to life. When I'm not working on my comic "Mixed Salad", you'll probably find me sketching, gaming, or daydreaming about my next project.</p>
+          <p>Hi! I'm Kübra — Graphic Designer & Comic Artist from Germany.</p>
+          <img src="images/kue.jpg" alt="Kübra Kamille" class="placeholder-image">
+          <h2>Find me here</h2>
+          <div class="button-group">
+              <a href="https://ko-fi.com/kubra13" target="_blank">Ko-fi</a>
+              <a href="https://bsky.app/profile/kubra.bsky.social" target="_blank">Bluesky</a>
+              <a href="https://kuebrakamille.myportfolio.com" target="_blank">Portfolio</a>
+          </div>
+      </section>
 
-        <!-- Spendenbereich -->
-        <section id="donate">
-            <h2>Support the Author</h2>
-            <p>Love Mixed Salad? Consider supporting on <a href="https://ko-fi.com/kubra13" target="_blank" rel="noopener noreferrer">Ko-fi</a>.</p>
-        </section>
-    </main>
+      <section id="contact">
+          <h2>Contact</h2>
+          <p>Write me: <a href="mailto:yourmail@example.com">yourmail@example.com</a></p>
+      </section>
+
+      <section id="blog">
+          <h2>Blog</h2>
+          <p>Updates & Behind the Scenes coming soon!</p>
+      </section>
+  </main>
 </div>
 
 <footer>

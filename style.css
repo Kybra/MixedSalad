@@ -9,6 +9,13 @@
     --text-black: #222;
 }
 
+/* Author Page Farben */
+:root {
+    --author-pink: #f7c9d3;
+    --author-light: #ffeef2;
+    --author-dark: #904c5e;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: var(--white-space);
@@ -407,7 +414,6 @@ body {
     }
 }
 
-
 /* ========== DONATE SECTION STYLES ========== */
 #donate {
     background-color: var(--color-5); /* Komplementärfarbe zu Blau (Orange) */
@@ -488,4 +494,39 @@ footer {
 .page-link.active {
     background-color: var(--color-5);
     color: white;
+}
+
+/* Author Page Layout Optimierung */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+.shop-section, #contact, #blog {
+    max-width: 600px;
+    width: 100%;
+    background-color: white;
+    border: 2px solid var(--author-pink);
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.button-group a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    background-color: var(--author-pink);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.button-group a:hover {
+    background-color: var(--author-dark);
 }
