@@ -238,6 +238,7 @@ body {
 /* ========== COMIC READER ========== */
 .comic-container {
     flex-grow: 1; /* Nimmt den restlichen Platz ein */
+    width: 100%;
     max-width: 800px;
     padding: 20px;
     background: white;
@@ -248,13 +249,13 @@ body {
 
 .comic-container img {
     width: 100%;
-    max-width: 750px;
+    max-width: 800px;
     border-radius: 10px;
 }
 
 
 /* ========== MOBILE: Kapitel-Navigation unter Comic ========== */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .container {
         flex-direction: column; /* Auf kleinen Bildschirmen untereinander */
     }
@@ -280,6 +281,7 @@ body {
 
 /* ========== KOMMENTAR-BEREICH ========== */
 .comment-section {
+    width: 100%;
     max-width: 800px;
     margin: 40px auto;
     padding: 25px;
@@ -356,17 +358,22 @@ body {
     max-width: 900px;
     margin: 40px auto;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .character-profile {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     gap: 20px;
     background: white;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     margin-bottom: 20px;
+    min-height: 420px; /* Gleiche Mindesthöhe für alle Boxen */
+    min-width: 750px; /* Einheitliche Mindestbreite für alle Boxen */
 }
 
 .character-info {
@@ -398,6 +405,8 @@ body {
     .character-profile {
         flex-direction: column;
         text-align: center;
+        min-height: auto; /* In der mobilen Ansicht flexible Höhe */
+        min-width: 450px; /* In der mobilen Ansicht flexible Breite */
     }
 
     .character-image img {
@@ -421,6 +430,7 @@ body {
     border-radius: 12px;
     text-align: center;
     margin: 30px auto;
+    width: 100%;
     max-width: 800px; /* Gleiche Breite wie Comic- und Kommentarbereich */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
     border-left: 5px solid var(--color-5); /* Blaue Berandung */
